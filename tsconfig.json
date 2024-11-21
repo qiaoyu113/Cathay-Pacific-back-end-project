@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+      "target": "ES6",                         // 代码编译目标，支持现代 ES6 特性
+      "module": "CommonJS",                    // 使用 Node.js 的模块系统
+      "rootDir": "./src",                      // 指定源代码目录
+      "outDir": "./dist",                      // 编译后输出目录
+      "strict": true,                          // 启用严格类型检查
+      "esModuleInterop": true,                 // 允许与 CommonJS 和 ES 模块互操作
+      "skipLibCheck": true,                    // 跳过声明文件的类型检查，提升速度
+      "forceConsistentCasingInFileNames": true,// 文件名大小写一致性
+      "moduleResolution": "node",              // 模块解析策略
+      "resolveJsonModule": true,               // 支持导入 JSON 文件
+      "allowSyntheticDefaultImports": true,    // 允许默认导入非 ES 模块
+      "noImplicitAny": true,                   // 禁止隐式 any 类型
+      "noUnusedLocals": true,                  // 禁止未使用的本地变量
+      "noUnusedParameters": true,              // 禁止未使用的函数参数
+      "strictNullChecks": true,                // 严格检查 null 和 undefined
+      "typeRoots": ["./node_modules/@types"],  // 类型声明文件目录
+      "baseUrl": ".",                          // 基础路径，便于模块导入
+      "paths": {                               // 自定义路径别名
+        "@models/*": ["src/models/*"],
+        "@controllers/*": ["src/controllers/*"],
+        "@routes/*": ["src/routes/*"],
+        "@utils/*": ["src/utils/*"]
+      }
+    },
+    "include": [
+      "src/**/*"                               // 包含 src 文件夹下的所有 TypeScript 文件
+    ],
+    "exclude": [
+      "node_modules",                          // 排除 node_modules
+      "dist",                                  // 排除输出目录
+      "scripts"                                // 排除脚本文件夹（如果不需要编译）
+    ]
+  }
+  
