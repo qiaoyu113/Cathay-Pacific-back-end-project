@@ -1,24 +1,11 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTotalFlightHours = exports.getFlightsByAircraft = exports.getFlights = void 0;
-const flightLogModel_1 = __importDefault(require("../models/flightLogModel"));
+const flightLogModel = __importDefault(require("../models/flightLogModel"));
+
 // API 1: Retrieve Flight Logs with Pagination and Sorting
 const getFlights = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { page = 1, limit = 10, sort = 'departureTime' } = req.query;
-        const flights = yield flightLogModel_1.default.find()
+        const flights = yield flightLogModel.default.find()
+            // .find({ createdAt: { $lt: new Date("2023-11-26T10:00:00Z") } }) // 游标条件
             .sort({ [sort]: 1 })
             .skip((+page - 1) * +limit)
             .limit(+limit);
@@ -29,6 +16,7 @@ const getFlights = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getFlights = getFlights;
+
 // API 2: Query Flights by Aircraft and Status
 const getFlightsByAircraft = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -37,7 +25,7 @@ const getFlightsByAircraft = (req, res) => __awaiter(void 0, void 0, void 0, fun
         const query = { aircraftId };
         if (status)
             query.status = status;
-        const flights = yield flightLogModel_1.default.find(query);
+        const flights = yield flightLogModel.default.find(query);
         res.json(flights);
     }
     catch (err) {
@@ -45,11 +33,12 @@ const getFlightsByAircraft = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getFlightsByAircraft = getFlightsByAircraft;
+
 // API 3: Calculate Total Flight Hours Within a Date Range
 const getTotalFlightHours = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { startDate, endDate } = req.query;
-        const flights = yield flightLogModel_1.default.aggregate([
+        const flights = yield flightLogModel.default.aggregate([
             {
                 $match: {
                     status: 'landed',
